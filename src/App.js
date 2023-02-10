@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+
+import Routes from "Routes";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { USER_TOKEN } from "utils/storage";
 
 function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkUserLogin = () => {
+      const userlogined = USER_TOKEN.get();
+      if (!userlogined) {
+        navigate('/login');
+      }
+    };
+    checkUserLogin();
+    window.addEventListener('storage', checkUserLogin);
+    return () => {
+      window.removeEventListener('storage', checkUserLogin);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="min-h-screen bg-slate-800">
+      <Routes />
     </div>
   );
 }
 
-export default App;
+export default (App);
