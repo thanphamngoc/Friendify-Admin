@@ -6,12 +6,12 @@ import { Link } from "react-router-dom";
 const Home = () => {
 
   const MENU_LIST = [
-    {
-      id: 'user',
-      width: 'w-full sm:w-1/2',
-      title: { name: 'Users', link: locations.users },
-      children: [{ id: 'create', name: 'Create', link: locations.usersCreate }],
-    },
+    // {
+    //   id: 'user',
+    //   width: 'w-full sm:w-1/2',
+    //   title: { name: 'Users', link: locations.users },
+    //   children: [{ id: 'create', name: 'Create', link: locations.usersCreate }],
+    // },
     {
       id: 'api-keys',
       width: 'w-full sm:w-1/2',
