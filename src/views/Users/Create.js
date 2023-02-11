@@ -1,4 +1,3 @@
-import chatgptKeysApi from "api/chatgptKeysApi";
 import usersApi from "api/usersApi";
 import ButtonRound from "components/Button/ButtonRound";
 import Container from "components/Container/Container";
@@ -102,7 +101,7 @@ const CreateUserPage = () => {
                   />
                   <Input.errorText message={errors?.[input.name]?.message} />
                 </div>
-              )
+              );
             })}
           </div>
           <div className="flex px-4 border-t sm:px-12 py-9">

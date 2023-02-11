@@ -1,7 +1,7 @@
 
 import Routes from "Routes";
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { USER_TOKEN } from "utils/storage";
 
 function App() {
