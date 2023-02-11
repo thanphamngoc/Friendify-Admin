@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import Loader from 'components/Loader/Loader';
+import SpinnerLoading from 'components/SpinnerLoading';
 
 const ButtonRound = ({ children, className = '', isLoading, disabled = false, ...props }) => {
   return (
@@ -10,13 +10,13 @@ const ButtonRound = ({ children, className = '', isLoading, disabled = false, ..
       className={classNames(
         'flex items-center rounded-full justify-center transition-opacity',
         disabled ? 'opacity-50 pointer-events-none' : 'hover:opacity-80',
-        !className?.includes('border') && 'border border-white-1',
+        !className?.includes('border') && 'border border-slate-800',
         !className?.includes('px') && 'px-5',
         !className?.includes('py') && 'py-2',
         className,
       )}
     >
-      {children} {isLoading && <Loader className="ml-2" size="sm" color="white" />}
+      {children} {isLoading && <SpinnerLoading className="ml-2" size="sm" color="white" />}
     </button>
   );
 };
