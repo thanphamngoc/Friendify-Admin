@@ -6,7 +6,7 @@ const ActionCell = ({ editText, onEdit, onDelete }) => {
   return (
     <div className="flex justify-center space-x-2 text-sm">
       {onEdit && (
-        <Tooltip position="top" title={editText}>
+        <Tooltip position="top" title={editText} theme='light'>
           <FiEdit
             data-tip=""
             data-for={`edit-btn-tooltip`}

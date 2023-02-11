@@ -8,7 +8,11 @@ const usersApi = {
   get: ({ params }) => {
     const url = '/users';
     return axiosClient.get(url, { params });
-  }
+  },
+  create: (body) => {
+    const url = '/users/registry';
+    return axiosClient.get(url, body);
+  },
 };
 
 export default usersApi;

@@ -38,7 +38,7 @@ const AddChatGptKeysPage = () => {
             <div className="relative flex-1 px-4 py-4 sm:px-12 animate-fade-in 4xl:border-r border-black-2 z-2">
               <Controller
                 control={control}
-                rules={{ required: true }}
+                rules={{ required: 'Required' }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
                     onBlur={onBlur}
@@ -52,8 +52,7 @@ const AddChatGptKeysPage = () => {
                         onChange(null);
                       }
                     }}
-                    type="textarea"
-                    rows={4}
+                    type="text"
                     isValid={!!errors?.['data']?.message}
                   />
                 )}
@@ -89,7 +88,7 @@ const AddChatGptKeysPage = () => {
                   history.push('/admin/lands');
                 }}
               >
-                Quay lại
+                Back
               </ButtonRound>
               <ButtonRound
                 className="font-bold text-white uppercase border-0 min-w-40 bg-slate-900"
@@ -97,7 +96,7 @@ const AddChatGptKeysPage = () => {
                 isLoading={isSubmitting}
                 type="submit"
               >
-                Xác nhận
+                Accept
               </ButtonRound>
             </div>
           </div>

@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
 export const ErrorSpan = ({ message }) => {
-  return <span className={`text-xs text-red-400 ${message ? '' : 'opacity-0'}`}>* {message || 'Invalid'}</span>;
+  return message && <span className={`text-xs text-red-400 ${message ? '' : 'opacity-0'}`}>* {message || 'Invalid'}</span>;
 };
 
 ErrorSpan.propTypes = {
@@ -28,6 +28,19 @@ Input.propTypes = {
   isValid: PropTypes.bool,
 };
 Input.errorText = ErrorSpan;
+
+
+export const Label = ({ children, htmlFor }) => {
+  return <div className="mb-2"><label htmlFor={htmlFor}>{children}</label></div>;
+};
+
+Label.propTypes = {
+  htmlFor: PropTypes.string,
+  children: PropTypes.node,
+};
+
+Input.label = Label;
+
 
 export const InputCustom = ({ className, register, label, rules, ...rest }) => {
   return (

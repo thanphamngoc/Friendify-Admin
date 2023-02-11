@@ -14,6 +14,7 @@ export const locations = {
   chatgptKeyCreate: '/chatgpt-keys/create',
   users: '/users',
   usersCreate: '/users/create',
+  usersEdit: '/users/edit/:id',
   login: '/login',
 };
 
