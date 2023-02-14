@@ -1,9 +1,12 @@
+import { locations } from "Routes";
 import chatgptKeysApi from "api/chatgptKeysApi";
-import ButtonRound from "components/Button/ButtonRound";
+import { CardBox } from "components/Card/CardBox";
 import Container from "components/Container/Container";
 import { showToastError, showToastSuccess } from "components/CustomToast/CustomToast";
+import FormFooter from "components/Form/FormFooter";
 import Input from "components/Input/Input";
 import { Controller, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const AddChatGptKeysPage = () => {
   const {
@@ -12,6 +15,8 @@ const AddChatGptKeysPage = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
+
+  const navigate = useNavigate();
 
   const watchData = watch('data');
 
@@ -28,11 +33,8 @@ const AddChatGptKeysPage = () => {
   };
 
   return (
-    <Container className="max-w-3xl py-4">
-      <div className="pt-16 mx-auto bg-white shadow-2xl mb-14 break leading rounded-xl">
-        <h1 className="pb-6 text-3xl font-bold text-center uppercase">
-          Add new keys
-        </h1>
+    <Container>
+      <CardBox title={'Add new keys'}>
         <form onSubmit={handleSubmit(onHandleSubmit)}>
           <div className="flex flex-col 4xl:flex-row">
             <div className="relative flex-1 px-4 py-4 sm:px-12 animate-fade-in 4xl:border-r border-black-2 z-2">
@@ -79,29 +81,13 @@ const AddChatGptKeysPage = () => {
               )}
             </div>
           </div>
-          <div className="flex px-4 border-t sm:px-12 py-9">
-            <div className="flex space-x-4">
-              <ButtonRound
-                className="font-bold uppercase min-w-40"
-                type="button"
-                onClick={() => {
-                  history.push('/admin/lands');
-                }}
-              >
-                Back
-              </ButtonRound>
-              <ButtonRound
-                className="font-bold text-white uppercase border-0 min-w-40 bg-slate-900"
-                disabled={Object.keys(errors).length > 0 || isSubmitting || watchData?.length === 0}
-                isLoading={isSubmitting}
-                type="submit"
-              >
-                Accept
-              </ButtonRound>
-            </div>
-          </div>
-        </form >
-      </div >
+          <FormFooter
+            disabled={Object.keys(errors).length > 0 || isSubmitting || watchData?.length === 0}
+            isLoading={isSubmitting}
+            onClickBack={() => { navigate(locations.chatgptKeys); }}
+          />
+        </form>
+      </CardBox>
     </Container >
   );
 };

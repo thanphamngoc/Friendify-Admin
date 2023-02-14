@@ -1,36 +1,43 @@
 import { locations } from "Routes";
 import chatgptKeysApi from "api/chatgptKeysApi";
+import axios from "axios";
 import ButtonRound from "components/Button/ButtonRound";
+import CardList from "components/Card/CardList";
 import Container from "components/Container/Container";
+import { showToastError } from "components/CustomToast/CustomToast";
 import Table from "components/Table/Table";
 import SimpleCell from "components/Table/TableCells/SimpleCell";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
 const ChatGptKeysPage = () => {
-  const [isLoading, setLoading] = useState(true);
+  const loadingRef = useRef(true);
   const [state, setState] = useState([]);
 
-
   useEffect(() => {
-    if (isLoading) {
-      const getDataApi = async () => {
-        await setLoading(true);
-        try {
-          const res = await chatgptKeysApi.get({
-            params: {},
-          });
-          await setState(res);
-        } catch (e) {
-          console.log(e);
-        } finally {
-          await setLoading(false);
+    const source = axios.CancelToken.source();
+    const getDataApi = async () => {
+      try {
+        const res = await chatgptKeysApi.get({
+          params: {},
+          cancelToken: source.token
+        });
+        setState(res);
+      } catch (e) {
+        console.log(e);
+        if (e.message !== 'cancel') {
+          showToastError(e.message);
         }
-      };
-      getDataApi();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        setState([]);
+      } finally {
+        loadingRef.current = false;
+      }
+    };
+    getDataApi();
+    return () => {
+      source.cancel('cancel');
+    };
   }, []);
 
   // ----------
@@ -51,32 +58,33 @@ const ChatGptKeysPage = () => {
 
   return (
     <Container className="max-w-3xl ">
-      <div className="">
-        <div className="text-sm bg-white rounded-lg shadow-2xl">
-          <div className="flex px-6 py-4">
-            <Link to={locations.chatgptKeyCreate}>
-              <ButtonRound className="flex items-center py-2 font-bold leading-none uppercase transition-transform duration-300 transform border-none bg-primary hover:-translate-y-1">
-                <FiPlus size={'1.1rem'} />
-                <span className="ml-1">Add keys</span>
-              </ButtonRound>
-            </Link>
-          </div>
-
-          <Table
-            isLoading={isLoading}
-            columns={tableColumns}
-            data={state}
-            headCellsClassName="bg-primary font-bold border uppercase"
-            bodyCellsClassName="border"
-            tableClassName={''}
-          // pagination keys
-          // totalPage={state?.totalPage}
-          // currentPage={state?.currentPage}
-          // totalItems={state?.totalItems}
-          // onChangePage={handleChangePage}
-          />
+      <CardList>
+        <div className="flex px-6 py-4">
+          <Link to={locations.chatgptKeyCreate}>
+            <ButtonRound
+              className="flex items-center font-bold uppercase transition-transform duration-300 transform hover:-translate-y-1"
+              color="primary"
+            >
+              <FiPlus size={'1.1rem'} />
+              <span className="ml-1">Add keys</span>
+            </ButtonRound>
+          </Link>
         </div>
-      </div>
+
+        <Table
+          isLoading={loadingRef.current}
+          columns={tableColumns}
+          data={state}
+          headCellsClassName="bg-primary text-white font-bold border uppercase"
+          bodyCellsClassName="border"
+          tableClassName={''}
+        // pagination keys
+        // totalPage={state?.totalPage}
+        // currentPage={state?.currentPage}
+        // totalItems={state?.totalItems}
+        // onChangePage={handleChangePage}
+        />
+      </CardList>
     </Container>
   );
 };

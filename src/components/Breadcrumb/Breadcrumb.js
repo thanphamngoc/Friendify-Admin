@@ -14,7 +14,7 @@ const Breadcrumb = () => {
         <nav className="flex px-2 py-6 text-white sm:px-0" aria-label="Breadcrumb">
           <ol className="inline-flex flex-wrap items-center space-x-1 md:space-x-3">
             {breadcrumbs[pathname].length > 0 ? (
-              <Link to={'/'} className="text-2xl hover:text-primary">
+              <Link to={'/'} className="text-2xl hover:text-primary-hover">
                 Dashboard
               </Link>
             ) : (
@@ -25,14 +25,14 @@ const Breadcrumb = () => {
                 <div className="flex items-center">
                   <FiChevronRight />
                   {item?.link ? (
-                    <Link to={item?.link} className="ml-1 text-2xl hover:text-primary md:ml-2">
+                    <Link to={item?.link} className="ml-1 text-2xl hover:text-primary-hover md:ml-2">
                       {item?.name}
                     </Link>
                   ) : (
                     <span
                       className={classNames(
-                        'ml-1 text-2xl font-bold hover:text-primary md:ml-2',
-                        item?.isActive && 'text-primary',
+                        'ml-1 text-2xl md:ml-2 cursor-default',
+                        item?.isActive && 'font-bold',
                       )}
                     >
                       {item?.name}

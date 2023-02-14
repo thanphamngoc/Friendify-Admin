@@ -8,7 +8,7 @@ const SuccessToast = ({ title, message }) => {
     <>
       <div className="flex items-center">
         <FiCheckCircle size={20} className="text-green-500" />
-        <span className="ml-2">{title || 'Thành công'}</span>
+        <span className="ml-2">{title || 'Successful'}</span>
       </div>
       <div className="mt-2">
         <span>{message}</span>
@@ -27,7 +27,7 @@ const ErrorToast = ({ title, message }) => {
     <>
       <div className="flex items-center">
         <FiXCircle size={20} className="text-red-500" />
-        <span className="ml-2">{title || 'Lỗi'}</span>
+        <span className="ml-2">{title || 'Error'}</span>
       </div>
       <div className="px-2 mt-2 ">
         <span>{message}</span>
@@ -45,7 +45,7 @@ const WarningToast = ({ title, message }) => (
   <>
     <div className="flex items-center">
       <FiAlertTriangle size={20} className="text-yellow" />
-      <span className="ml-2">{title || 'Cảnh báo'}</span>
+      <span className="ml-2">{title || 'Warning'}</span>
     </div>
     <div className="mt-2">
       <span>{message}</span>
@@ -62,7 +62,7 @@ const InfoToast = ({ title, message }) => (
   <>
     <div className="flex items-center">
       <FiInfo size={20} className="text-blue" />
-      <span className="ml-2">{title || 'Thông tin'}</span>
+      <span className="ml-2">{title || 'Infomation'}</span>
     </div>
     <div className="mt-2">
       <span>{message}</span>

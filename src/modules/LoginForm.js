@@ -7,10 +7,12 @@ import usersApi from 'api/usersApi';
 import { USER_TOKEN } from 'utils/storage';
 import { showToastError, showToastSuccess } from 'components/CustomToast/CustomToast';
 import { useNavigate } from 'react-router-dom';
+import { useSetUserLogin } from 'store/userLogin/hook';
 
-const Login = () => {
+const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const setUserLogin = useSetUserLogin();
 
   const {
     handleSubmit,
@@ -69,27 +71,28 @@ const Login = () => {
   const onHandleSubmit = async (data) => {
     try {
       const res = await usersApi.login(data);
+      setUserLogin(res);
       USER_TOKEN.set(res?.token);
       showToastSuccess(
-        'Đăng nhập thành công',
+        'Login successful',
         <>
-          Xin chào <span className="capitalize">{res.fullName}</span>
+          Welcome <span className="capitalize">{res.fullName}</span>
         </>,
       );
       navigate('/');
     } catch (error) {
       console.error(error);
       showToastError(
-        'Lỗi',
+        'Error while login',
         error?.response?.status === 422 || error?.response?.status === 403
-          ? 'Vui lòng kiểm tra lại email hoặc mật khẩu'
-          : 'Đăng nhập thất bại',
+          ? 'Check your email or password again'
+          : 'Login failed',
       );
     }
   };
 
   return (
-    <form autoComplete="off" onSubmit={handleSubmit(onHandleSubmit)}>
+    <form onSubmit={handleSubmit(onHandleSubmit)}>
       <div className="px-4 sm:px-12 py-9 animate-fade-in">
         {FORM_INPUT.map((item, index) => (
           <div key={`register-input-${index}`} className={`${item.className} relative `}>
@@ -128,7 +131,6 @@ const Login = () => {
                   )
                 }
                 name={item.name}
-                autoComplete="off"
                 defaultValue={item.defaultValue}
               />
               {errors?.[item.name]?.message && (
@@ -149,6 +151,6 @@ const Login = () => {
   );
 };
 
-Login.propTypes = {};
+LoginForm.propTypes = {};
 
-export default Login;
+export default LoginForm;

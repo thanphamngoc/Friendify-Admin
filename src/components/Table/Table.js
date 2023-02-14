@@ -26,7 +26,7 @@ const Table = ({
     columns: _columns || [],
     data: _data || [],
   });
-console.log(rows);
+
   return (
     <>
       <div className="pb-4 overflow-x-auto overflow-y-visible">
@@ -62,10 +62,10 @@ console.log(rows);
             {
               // Table rows is loading
               isLoading && (
-                <tr>
+                <tr className="h-12 border">
                   <td>
                     <div
-                      className={`absolute w-full h-full top-0 left-0 bg-black-3-90% z-1 flex items-center justify-center`}
+                      className={`absolute w-full h-full top-0 left-0 z-1 flex items-center justify-center`}
                     >
                       <SpinnerLoading className="h-8 text-primary" />
                     </div>
@@ -108,9 +108,9 @@ console.log(rows);
               !isLoading && rows?.length === 0 && (
                 <tr>
                   <td colSpan={visibleColumns.length}>
-                    <div className={`w-full flex justify-center items-center py-4 text-center ${bodyCellsClassName}`}>
+                    <div className={'w-full flex justify-center items-center py-4 text-center'}>
                       <HiOutlineDocumentSearch size={'2rem'} className="mr-2" />
-                      Không tìm thấy dữ liệu
+                      No data found
                     </div>
                   </td>
                 </tr>
@@ -152,7 +152,7 @@ Table.defaultProps = {
   totalPage: 0,
   currentPage: 0,
   totalItems: 0,
-  onChangePage: () => {},
+  onChangePage: () => { },
 };
 
 export default Table;

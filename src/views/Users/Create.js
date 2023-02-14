@@ -1,11 +1,16 @@
+import { locations } from "Routes";
 import usersApi from "api/usersApi";
-import ButtonRound from "components/Button/ButtonRound";
+import { CardBox } from "components/Card/CardBox";
 import Container from "components/Container/Container";
 import { showToastError, showToastSuccess } from "components/CustomToast/CustomToast";
+import FormFooter from "components/Form/FormFooter";
 import Input from "components/Input/Input";
 import { Controller, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const CreateUserPage = () => {
+  const navigate = useNavigate();
+
   const {
     control,
     watch,
@@ -66,12 +71,9 @@ const CreateUserPage = () => {
   ];
 
   return (
-    <Container className="max-w-3xl py-4">
-      <div className="pt-16 mx-auto bg-white shadow-2xl mb-14 break leading rounded-xl">
-        <h1 className="pb-6 text-3xl font-bold text-center uppercase">
-          Add new user
-        </h1>
-        <form onSubmit={handleSubmit(onHandleSubmit)}>
+    <Container>
+      <CardBox title={'Add new user'}>
+        <form autoComplete="off" onSubmit={handleSubmit(onHandleSubmit)}>
           <div className="flex flex-col 4xl:flex-row">
             {arrayInput.map((input) => {
               return (
@@ -93,6 +95,7 @@ const CreateUserPage = () => {
                         onChange={onChange}
                         type={input.type}
                         isValid={!!errors?.[input.name]?.message}
+                        autoComplete="off"
                       />
                     )}
                     name={input.name}
@@ -104,29 +107,13 @@ const CreateUserPage = () => {
               );
             })}
           </div>
-          <div className="flex px-4 border-t sm:px-12 py-9">
-            <div className="flex space-x-4">
-              <ButtonRound
-                className="font-bold uppercase min-w-40"
-                type="button"
-                onClick={() => {
-                  history.push('/admin/lands');
-                }}
-              >
-                Back
-              </ButtonRound>
-              <ButtonRound
-                className="font-bold text-white uppercase border-0 min-w-40 bg-slate-900"
-                disabled={Object.keys(errors).length > 0 || isSubmitting || watchData?.length === 0}
-                isLoading={isSubmitting}
-                type="submit"
-              >
-                Accept
-              </ButtonRound>
-            </div>
-          </div>
-        </form >
-      </div >
+          <FormFooter
+            disabled={Object.keys(errors).length > 0 || isSubmitting || watchData?.length === 0}
+            isLoading={isSubmitting}
+            onClickBack={() => { navigate(locations.users); }}
+          />
+        </form>
+      </CardBox>
     </Container >
   );
 };

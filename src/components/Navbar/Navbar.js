@@ -1,28 +1,38 @@
-import { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { Disclosure } from '@headlessui/react';
+import { Disclosure, Menu, Transition } from '@headlessui/react';
 import Container from 'components/Container/Container';
-import { FiX, FiMenu, FiLogOut } from 'react-icons/fi';
-import ModalLogout from 'components/Modal/ModalLogout';
+import { FiX, FiMenu, FiUser } from 'react-icons/fi';
+import { useGetUserLogin } from 'store/userLogin/hook';
+import classNames from 'classnames';
+import LogoutButton from 'modules/LogoutButton';
+import { locations } from 'Routes';
 
 const Navbar = () => {
-  // -------------
-  // HANDLE LOGOUT
-  const [openModalLogout, setOpenModalLogout] = useState(false);
-  const toggleModalLogout = () => setOpenModalLogout(!openModalLogout);
-  // --------------
+  const userLogin = useGetUserLogin();
+
+  const menuButtonClass = 'w-full text-left rounded hover:bg-gray-700 hover:text-white';
+
   const userNavigationLogin = [
     {
-      name: 'Đăng xuất',
-      href: '#',
-      onClick: toggleModalLogout,
-      icon: <FiLogOut className="inline mr-2" size="1rem" />,
+      id: 'account-settings',
+      name: 'Account Settings',
+      href: locations.account,
+      // onClick: toggleModalLogout,
+      icon: <FiUser className="inline mr-2" size="1rem" />,
+    },
+    {
+      id: 'divider-1',
+      component: <hr />
+    },
+    {
+      id: 'sign-out',
+      component: <LogoutButton className={menuButtonClass} />
     },
   ];
 
   return (
     <>
-      <ModalLogout isOpen={openModalLogout} toggleModal={toggleModalLogout} />
       <div className="w-screen py-2 bg-white ">
         <Container className="flex items-center around-20 h-25">
           <Disclosure as="nav" className="w-full h-full">
@@ -30,36 +40,71 @@ const Navbar = () => {
               <>
                 <div className="flex items-center justify-between h-full">
                   <div className="flex items-center flex-auto h-full">
-                    <div className="flex-shrink-0">
+                    <div className="flex-shrink-0 text-2xl font-bold">
                       <Link to="/">
                         VoiceGPT
                       </Link>
                     </div>
                   </div>
+                  {/* Show avatar after login on pc */}
                   <div className="hidden xl:block">
-                    {/* Show avatar after login on pc */}
-                    {userNavigationLogin.map(
-                      (item) =>
-                        !item?.isHide && (
-                          <Disclosure.Button
-                            key={`user-nav-mobile-${item.name}`}
-                            as={'button'}
-                            className="block w-full"
-                          >
-                            <Link
-                              to={item?.href}
-                              onClick={item.onClick}
-                              className="block w-full px-3 py-2 text-base font-medium rounded-md hover:bg-gray-700 hover:text-white"
-                            >
-                              {item?.icon}
-                              {item?.name}
-                            </Link>
-                          </Disclosure.Button>
-                        ),
-                    )}
+                    <div className="flex items-center ml-4 xl:ml-6">
+                      {/* Profile dropdown */}
+                      <Menu as="div" className="relative px-6 py-4">
+                        <Menu.Button className="flex items-center max-w-xs focus:outline-none">
+                          <span className="sr-only">Open user menu</span>
+                          <div className="mr-2 text-left">
+                            <p>{userLogin?.fullName}</p>
+                          </div>
+                          <img
+                            className="w-8 h-8 ml-2 bg-white border rounded-full"
+                            src={userLogin?.avatar?.url || '/images/user-default.png'}
+                            alt="avatar"
+                          />
+                        </Menu.Button>
+                        <Transition
+                          as={React.Fragment}
+                          enter="transition ease-out duration-100"
+                          enterFrom="transform opacity-0 scale-95"
+                          enterTo="transform opacity-100 scale-100"
+                          leave="transition ease-in duration-75"
+                          leaveFrom="transform opacity-100 scale-100"
+                          leaveTo="transform opacity-0 scale-95"
+                        >
+                          <Menu.Items className="absolute right-0 w-48 p-1 mt-2 text-sm origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            {userNavigationLogin.map((item) => !item?.isHide && (
+                              item?.component ? (
+                                <React.Fragment key={`user-nav-mobile-${item.id}`}>
+                                  {item?.component}
+                                </React.Fragment>
+                              ) : (
+                                <Menu.Item
+                                  key={item.id}
+                                  className={menuButtonClass}
+                                >
+                                  {({ active }) => (
+                                    <Link
+                                      to={item?.href}
+                                      onClick={item?.onClick}
+                                      className={classNames(
+                                        active ? 'text-primary' : '',
+                                        'block px-3 py-2',
+                                      )}
+                                    >
+                                      {item?.icon}
+                                      {item?.name}
+                                    </Link>
+                                  )}
+                                </Menu.Item>
+                              )
+                            ))}
+                          </Menu.Items>
+                        </Transition>
+                      </Menu>
+                    </div>
                   </div>
+                  {/* Mobile menu button */}
                   <div className="flex xl:hidden">
-                    {/* Mobile menu button */}
                     <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md hover:text-white hover:bg-gray-700 ">
                       <span className="sr-only">Open main menu</span>
                       {open ? (
@@ -69,31 +114,33 @@ const Navbar = () => {
                       )}
                     </Disclosure.Button>
                   </div>
+                  {/* --------------- */}
                 </div>
                 {/* Mobile menu button dropdown */}
                 <Disclosure.Panel className="xl:hidden bg-black-2 animate-fade-in">
-                  <div className="pt-4 pb-3 border-gray-700">
-                    <div className="px-2 space-y-1">
-                      {userNavigationLogin.map(
-                        (item) =>
-                          !item?.isHide && (
-                            <Disclosure.Button
-                              key={`user-nav-mobile-${item.name}`}
-                              as={'button'}
-                              className="block w-full text-left "
-                            >
-                              <Link
-                                to={item?.href}
-                                onClick={item.onClick}
-                                className="block w-full px-3 py-2 text-base font-medium rounded-md hover:bg-gray-700 hover:text-white"
-                              >
-                                {item?.icon}
-                                {item?.name}
-                              </Link>
-                            </Disclosure.Button>
-                          ),
-                      )}
-                    </div>
+                  <div className="px-2 space-y-1 ">
+                    {userNavigationLogin.map((item) => !item?.isHide && (item?.component
+                      ? (
+                        <React.Fragment key={`user-nav-mobile-${item.id}`}>
+                          {item?.component}
+                        </React.Fragment>
+                      ) : (
+                        <Disclosure.Button
+                          key={`user-nav-mobile-${item.id}`}
+                          as={'button'}
+                          className={menuButtonClass}
+                        >
+                          <Link
+                            to={item?.href}
+                            onClick={item.onClick}
+                            className="block px-3 py-2 "
+                          >
+                            {item?.icon}
+                            {item?.name}
+                          </Link>
+                        </Disclosure.Button>
+                      )))
+                    }
                   </div>
                 </Disclosure.Panel>
               </>

@@ -7,6 +7,7 @@ import ChatGptKeysPage from "views/ChatGPTKeys";
 import AddChatGptKeysPage from "views/ChatGPTKeys/Add";
 import UsersPage from "views/Users";
 import CreateUserPage from "views/Users/Create";
+import MyAccountPage from "views/MyAccount";
 
 export const locations = {
   home: '/',
@@ -16,6 +17,7 @@ export const locations = {
   usersCreate: '/users/create',
   usersEdit: '/users/edit/:id',
   login: '/login',
+  account: '/account',
 };
 
 export const breadcrumbs = {
@@ -34,6 +36,9 @@ export const breadcrumbs = {
     { name: 'Users', link: locations.users },
     { name: 'Create', isActive: true }
   ],
+  [locations.account]: [
+    { name: 'My account', isActive: true }
+  ],
 };
 
 const Routes = () => {
@@ -45,6 +50,7 @@ const Routes = () => {
         <Route path={locations.chatgptKeyCreate} element={<AddChatGptKeysPage />} />
         <Route path={locations.users} element={<UsersPage />} />
         <Route path={locations.usersCreate} element={<CreateUserPage />} />
+        <Route path={locations.account} element={<MyAccountPage />} />
       </Route>
       <Route path={locations.login} element={<Login />} />
       <Route path="*" element={<PageNotFound />} />

@@ -18,10 +18,10 @@ const ModalLogout = ({ isOpen, toggleModal }) => {
       <ModalTitle onClose={toggleModal}>Warning</ModalTitle>
       <div className="text-lg text-center">Do you still want to logout?</div>
       <div className="flex justify-center my-4">
-        <ButtonRound onClick={toggleModal} className="mr-2 font-bold text-black bg-gray-1">
+        <ButtonRound onClick={toggleModal} className="mr-2 font-bold">
           Close
         </ButtonRound>
-        <ButtonRound onClick={handleLogout} className="mr-2 font-bold text-red-500 border border-red-500 bg-primary">
+        <ButtonRound onClick={handleLogout} className="mr-2 font-bold text-red-500 border border-red-500">
           Logout
         </ButtonRound>
       </div>

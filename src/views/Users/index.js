@@ -1,43 +1,66 @@
 import { locations } from "Routes";
 import usersApi from "api/usersApi";
+import axios from "axios";
 import ButtonRound from "components/Button/ButtonRound";
+import CardList from "components/Card/CardList";
 import Container from "components/Container/Container";
+import { showToastError } from "components/CustomToast/CustomToast";
 import Table from "components/Table/Table";
 import ActionCell from "components/Table/TableCells/ActionCell";
 import BadgeCell from "components/Table/TableCells/BadgeCell";
 import SimpleCell from "components/Table/TableCells/SimpleCell";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { COLOR_BADGE, STATUS_USER } from "utils/constant";
 
+const initState = [];
+
 const UsersPage = () => {
   const navigate = useNavigate();
-  const [isLoading, setLoading] = useState(true);
-  const [state, setState] = useState([]);
+  const loadingRef = useRef(true);
+  const [state, setState] = useState(initState);
+
+  const getDataApi = async (source) => {
+    try {
+      const res = await usersApi.get({
+        params: {},
+        cancelToken: source.token,
+        // cancelToken: sourceRef.current.token,
+      });
+      setState(res);
+    } catch (e) {
+      if (e.message !== 'cancel') {
+        showToastError(e.message);
+      }
+      setState([...initState]);
+    } finally {
+      loadingRef.current = false;
+    }
+  };
 
 
   useEffect(() => {
-    if (isLoading) {
-      const getDataApi = async () => {
-        await setLoading(true);
-        try {
-          const res = await usersApi.get({
-            params: {},
-          });
-          await setState(res);
-        } catch (e) {
-          console.log(e);
-        } finally {
-          await setLoading(false);
-        }
-      };
-      getDataApi();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const source = axios.CancelToken.source();
+    getDataApi(source);
+    return () => {
+      source.cancel('cancel');
+    };
   }, []);
-
-  // ----------
+  // ----------------------------------------------------------------
+  // SEARCHING HELPERS
+  // const [name, setName] = useState('');
+  // useEffect(() => {
+  //   if (loadingRef.current) { return; }
+  //   const source = axios.CancelToken.source();
+  //   const settimeout = setTimeout(() => {
+  //     getDataApi(source);
+  //   }, 500);4
+  //   return () => {
+  //     clearTimeout(settimeout);
+  //   };
+  // }, [name]);
+  // ----------------------------------------------------------------
   const tableColumns = [
     {
       id: 'id',
@@ -71,7 +94,7 @@ const UsersPage = () => {
               onEdit={() => {
                 navigate(`/users/edit/${row?.original?._id}`);
               }}
-              onDelete={() => {}}
+              onDelete={() => { }}
             />
           </div>
         );
@@ -80,33 +103,37 @@ const UsersPage = () => {
   ];
 
   return (
-    <Container className="">
-      <div className="">
-        <div className="text-sm bg-white rounded-lg shadow-2xl">
-          <div className="flex px-6 py-4">
-            <Link to={locations.usersCreate}>
-              <ButtonRound className="flex items-center py-2 font-bold leading-none uppercase transition-transform duration-300 transform border-none bg-primary hover:-translate-y-1">
-                <FiPlus size={'1.1rem'} />
-                <span className="ml-1">Create</span>
-              </ButtonRound>
-            </Link>
-          </div>
-
-          <Table
-            isLoading={isLoading}
-            columns={tableColumns}
-            data={state}
-            headCellsClassName="bg-primary font-bold border uppercase"
-            bodyCellsClassName="border"
-            tableClassName={''}
-          // pagination keys
-          // totalPage={state?.totalPage}
-          // currentPage={state?.currentPage}
-          // totalItems={state?.totalItems}
-          // onChangePage={handleChangePage}
-          />
+    <Container className="" >
+      {/* <input value={name} onChange={(e) => {
+        setName(e.target.value);
+      }} /> */}
+      <CardList>
+        <div className="flex px-6 py-4">
+          <Link to={locations.usersCreate}>
+            <ButtonRound
+              className="flex items-center font-bold uppercase transition-transform duration-300 transform hover:-translate-y-1"
+              color={'primary'}
+            >
+              <FiPlus size={'1.1rem'} />
+              <span className="ml-1">Create</span>
+            </ButtonRound>
+          </Link>
         </div>
-      </div>
+
+        <Table
+          isLoading={loadingRef.current}
+          columns={tableColumns}
+          data={state}
+          headCellsClassName="bg-primary text-white font-bold border uppercase"
+          bodyCellsClassName="border"
+          tableClassName={''}
+        // pagination keys
+        // totalPage={state?.totalPage}
+        // currentPage={state?.currentPage}
+        // totalItems={state?.totalItems}
+        // onChangePage={handleChangePage}
+        />
+      </CardList>
     </Container>
   );
 };
