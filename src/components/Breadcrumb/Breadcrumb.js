@@ -24,7 +24,7 @@ const Breadcrumb = () => {
     });
     return array.join('/');
   }, [isHaveParams, params, pathname]);
-
+  
   return (
     <Container>
       <div className='px-4'>

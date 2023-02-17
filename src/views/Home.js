@@ -10,13 +10,19 @@ const Home = () => {
       id: 'user',
       width: 'w-full sm:w-1/2 xl:w-1/4',
       title: { name: 'Users', link: locations.users },
-      children: [{ id: 'create', name: 'Create', link: locations.usersCreate }],
+      // children: [{ id: 'create', name: 'Create', link: locations.usersCreate }],
     },
     {
       id: 'api-keys',
       width: 'w-full sm:w-1/2 xl:w-1/4',
       title: { name: 'ChatGPT Keys', link: locations.chatgptKeys },
       children: [{ id: 'create', name: 'Add keys', link: locations.chatgptKeyCreate }],
+    },
+    {
+      id: 'discussions',
+      width: 'w-full sm:w-1/2 xl:w-1/4',
+      title: { name: 'Discussion', link: locations.discussion },
+      children: [{ id: 'create', name: 'Create', link: locations.discussionCreate }],
     },
 
   ];
@@ -28,7 +34,8 @@ const Home = () => {
           <div key={item?.id} className={` p-4 ${item?.width}`}>
             <div
               className={classNames(
-                'w-full p-4 transition duration-300 transform rounded-lg shadow-lg hover:shadow-2xl hover:-translate-y-2 bg-black-3 bg-white',
+                'w-full h-full p-4 rounded-lg shadow-lg hover:-translate-y-2 bg-white',
+                'transition-all duration-300 transform'
               )}
             >
               {item?.title?.link ? (

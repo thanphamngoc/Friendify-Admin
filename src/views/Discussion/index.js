@@ -1,5 +1,5 @@
 import { locations } from "Routes";
-import usersApi from "api/usersApi";
+import discussionApi from "api/discussionApi";
 import axios from "axios";
 import ButtonRound from "components/Button/ButtonRound";
 import CardList from "components/Card/CardList";
@@ -7,20 +7,23 @@ import Container from "components/Container/Container";
 import { showToastError } from "components/CustomToast/CustomToast";
 import InputSearch from "components/Input/InputSearch";
 import Table from "components/Table/Table";
-import SelectCell from "components/Table/TableCells/SelectCell";
+import ActionCell from "components/Table/TableCells/ActionCell";
+import BadgeCell from "components/Table/TableCells/BadgeCell";
 import SimpleCell from "components/Table/TableCells/SimpleCell";
+import TimeCell from "components/Table/TableCells/TimeCell";
 import { useEffect, useRef, useState } from "react";
 import { FiPlus } from "react-icons/fi";
-import { Link, useSearchParams } from "react-router-dom";
-import { ROW_PER_PAGE, SELECT_STATUS_USER, STATUS_USER } from "utils/constant";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { COLOR_BADGE, STATUS_USER } from "utils/constant";
 
 const initState = [];
 
-const UsersPage = () => {
+const DiscussionPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const paramsPage = searchParams.get('page');
   const paramsTextSearch = searchParams.get('textSearch');
 
+  const navigate = useNavigate();
   const inputSearchTimeoutRef = useRef();
   const loadingRef = useRef(true);
   const [state, setState] = useState(initState);
@@ -29,13 +32,11 @@ const UsersPage = () => {
     const source = axios.CancelToken.source();
     const getDataApi = async () => {
       try {
-        const params = {
-          textSearch: paramsTextSearch,
-          rowPerPage: ROW_PER_PAGE,
-          page: +paramsPage || 1,
-        };
-        const res = await usersApi.get({
-          params,
+        const res = await discussionApi.get({
+          params: {
+            textSearch: paramsTextSearch || '',
+            page: +paramsPage || 1
+          },
           cancelToken: source.token,
         });
         setState(res);
@@ -68,82 +69,52 @@ const UsersPage = () => {
     }, 500);
   };
 
-  const handleChangeUserStatus = async (row, selectObj) => {
-    try {
-      await usersApi.edit(row?.original?._id, { status: STATUS_USER?.[selectObj?.key] });
-      setState({
-        ...state, data: state?.data?.map((item) => {
-          if (item._id === row?.original?._id) {
-            return {
-              ...item,
-              status: STATUS_USER[selectObj.key]
-            };
-          }
-          return item;
-        })
-      });
-    } catch (e) {
-      console.log(e);
-      showToastError('', 'Something went wrong');
-    }
-  };
-  // ----------------------------------------------------------------
   const tableColumns = [
     {
-      id: 'id',
-      Header: () => <div>#</div>,
+      id: 'creator',
+      Header: () => <div className="text-left">Creator</div>,
+      Cell: ({ row }) => <SimpleCell className="text-left" data={row?.original?.creator?.fullName} />,
+    },
+    {
+      id: 'description',
+      Header: () => <div className="text-left">description</div>,
+      Cell: ({ row }) => <SimpleCell className="text-left truncate max-w-prose" data={row?.original?.description} />,
+    },
+    {
+      id: 'type',
+      Header: () => <div className="text-left">Type</div>,
+      Cell: ({ row }) => <SimpleCell className="text-left" data={row?.original?.type} />,
+    },
+    {
+      id: 'child',
+      Header: () => <div className="text-left">Comments</div>,
+      Cell: ({ row }) => <SimpleCell className="text-left" data={row?.original?.child} />,
+    },
+    
+    {
+      id: 'action',
+      Header: () => <div className="text-center"></div>,
       Cell: ({ row }) => {
-        return <SimpleCell className="text-center" data={`${ROW_PER_PAGE * (state.currentPage - 1) + row?.index + 1}`} />;
+        return (
+          <div className="flex justify-center space-x-4">
+            <ActionCell
+              onEdit={() => {
+                navigate(`/users/edit/${row?.original?._id}`);
+              }}
+              // onDelete={() => { }}
+            />
+          </div>
+        );
       },
     },
-    {
-      id: 'name',
-      Header: () => <div className="text-left">Fullname</div>,
-      Cell: ({ row }) => <SimpleCell className="text-left" data={row?.original?.fullName} />,
-    },
-    {
-      id: 'email',
-      Header: () => <div className="text-left">Email</div>,
-      Cell: ({ row }) => <SimpleCell className="text-left" data={row?.original?.email} />,
-    },
-    {
-      id: 'role',
-      Header: () => <div className="text-left">Role</div>,
-      Cell: ({ row }) => <SimpleCell className="text-left" data={row?.original?.role} />,
-    },
-    {
-      id: 'referralId',
-      Header: () => <div className="text-left">Ref</div>,
-      Cell: ({ row }) => <SimpleCell className="text-left" data={row?.original?.referralId} />,
-    },
-    {
-      id: 'inviterReferralId',
-      Header: () => <div className="text-left">Inviter-Ref</div>,
-      Cell: ({ row }) => <SimpleCell className="text-left" data={row?.original?.inviterReferralId} />,
-    },
-    {
-      id: 'totalRefDaily',
-      Header: () => <div className="text-center">Ref-Daily</div>,
-      Cell: ({ row }) => <SimpleCell className="text-right" data={row?.original?.totalRefDaily} />,
-    },
-    {
-      id: 'status',
-      Header: () => <div className="text-center">Status</div>,
-      Cell: ({ row }) => (
-        <SelectCell
-          selected={SELECT_STATUS_USER.find((item) => item.name === row?.original?.status)}
-          list={SELECT_STATUS_USER}
-          onChange={(selectObj) => { handleChangeUserStatus(row, selectObj); }}
-        />
-      ),
-    },
   ];
+
 
   return (
     <Container className="" >
       <CardList>
         <div className="flex justify-between px-6 py-4">
-          <Link to={locations.usersCreate} className="pointer-events-none">
+          <Link to={locations.discussionCreate} className="pointer-events-none">
             <ButtonRound
               className="flex items-center font-bold uppercase transition-transform duration-300 transform hover:-translate-y-1"
               color="primary"
@@ -178,4 +149,4 @@ const UsersPage = () => {
   );
 };
 
-export default UsersPage;
+export default DiscussionPage;
