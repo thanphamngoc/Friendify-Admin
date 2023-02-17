@@ -22,7 +22,7 @@ const Home = () => {
       id: 'discussions',
       width: 'w-full sm:w-1/2 xl:w-1/4',
       title: { name: 'Discussion', link: locations.discussion },
-      children: [{ id: 'create', name: 'Create', link: locations.discussionCreate }],
+      // children: [{ id: 'create', name: 'Create', link: locations.discussionCreate }],
     },
 
   ];
