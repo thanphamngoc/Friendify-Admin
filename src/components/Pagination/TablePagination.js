@@ -18,7 +18,7 @@ const TablePagination = ({ pageCount, onChangePage, currentPage, totalItems }) =
         breakClassName="flex justify-center items-center h-8 w-8  ml-1 rounded-full"
         pageCount={pageCount}
         initialPage={currentPage - 1}
-        forcePage={currentPage - 1}
+        // forcePage={currentPage - 1}
         marginPagesDisplayed={2}
         pageRangeDisplayed={2}
         onPageChange={handleChangePage}

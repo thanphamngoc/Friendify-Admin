@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       colors: {
         primary: slate[800],
+        secondary: slate[500],
         'primary-hover': slate[400]
       }
     },
