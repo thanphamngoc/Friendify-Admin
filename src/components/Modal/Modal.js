@@ -48,12 +48,12 @@ export default function Modal({ open, onClose, children, size, className }) {
                 'relative inline-block align-bottom text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full max-w-xl rounded-lg',
                 size === 'lg' && 'sm:max-w-3xl',
                 size === 'screen' && 'sm:max-w-screen-xl',
-                !className?.includes('bg-') && 'bg-black-3 text-white',
+                !className?.includes('bg-') && 'bg-white ',
                 className,
               )}
             >
               {children}
-              <button className="absolute top-0 right-0 p-4 text-4xl text-white-1" onClick={() => onClose && onClose()}>
+              <button className="absolute top-0 right-0 p-4 text-3xl" onClick={() => onClose && onClose()}>
                 <FiX />
               </button>
             </div>

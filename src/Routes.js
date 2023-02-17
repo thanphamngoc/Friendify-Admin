@@ -16,6 +16,9 @@ export const locations = {
   users: '/users',
   usersCreate: '/users/create',
   usersEdit: '/users/edit/:id',
+  // discussion: '/discussion',
+  // discussionCreate: '/discussion/create',
+  // discussionEdit: '/discussion/edit/:id',
   login: '/login',
   account: '/account',
 };
@@ -36,6 +39,11 @@ export const breadcrumbs = {
     { name: 'Users', link: locations.users },
     { name: 'Create', isActive: true }
   ],
+  [locations.usersEdit]: [
+    { name: 'Users', link: locations.users },
+    // { paramKey: 'id', isActive: true }
+    { name: 'Edit', isActive: true }
+  ],
   [locations.account]: [
     { name: 'My account', isActive: true }
   ],
@@ -50,6 +58,7 @@ const Routes = () => {
         <Route path={locations.chatgptKeyCreate} element={<AddChatGptKeysPage />} />
         <Route path={locations.users} element={<UsersPage />} />
         <Route path={locations.usersCreate} element={<CreateUserPage />} />
+        <Route path={locations.usersEdit}  element={<CreateUserPage />} />
         <Route path={locations.account} element={<MyAccountPage />} />
       </Route>
       <Route path={locations.login} element={<Login />} />

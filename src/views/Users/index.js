@@ -34,7 +34,7 @@ const UsersPage = () => {
         const res = await usersApi.get({
           params: {
             textSearch: paramsTextSearch || '',
-            rowPerPage: 1,
+            // rowPerPage: 1,
             page: +paramsPage || 1
           },
           cancelToken: source.token,
@@ -118,12 +118,12 @@ const UsersPage = () => {
       Header: () => <div className="text-center">Status</div>,
       Cell: ({ row }) => {
         return (
-          <div className="flex justify-center space-x-4 pointer-events-none opacity-30">
+          <div className="flex justify-center space-x-4">
             <ActionCell
               onEdit={() => {
                 navigate(`/users/edit/${row?.original?._id}`);
               }}
-              onDelete={() => { }}
+              // onDelete={() => { }}
             />
           </div>
         );
@@ -135,10 +135,11 @@ const UsersPage = () => {
     <Container className="" >
       <CardList>
         <div className="flex justify-between px-6 py-4">
-          <Link to={locations.usersCreate}>
+          <Link to={locations.usersCreate} className="pointer-events-none">
             <ButtonRound
               className="flex items-center font-bold uppercase transition-transform duration-300 transform hover:-translate-y-1"
-              color={'primary'}
+              color="primary"
+              disabled
             >
               <FiPlus size={'1.1rem'} />
               <span className="ml-1">Create</span>
