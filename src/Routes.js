@@ -9,7 +9,7 @@ import UsersPage from "views/Users";
 import CreateUserPage from "views/Users/Create";
 import MyAccountPage from "views/MyAccount";
 import DiscussionPage from "views/Discussion";
-import CreateEditDiscussionPage from "views/Discussion/CreateEdit";
+import DiscussionDetailPage from "views/Discussion/DiscussionDetail";
 
 export const locations = {
   home: '/',
@@ -20,7 +20,7 @@ export const locations = {
   usersEdit: '/users/edit/:id',
   discussion: '/discussion',
   discussionCreate: '/discussion/create',
-  discussionEdit: '/discussion/edit/:id',
+  discussionDetail: '/discussion/:id',
   login: '/login',
   account: '/account',
 };
@@ -53,9 +53,9 @@ export const breadcrumbs = {
     { name: 'Discussion', link: locations.discussion},
     { name: 'Create', isActive: true }
   ],
-  [locations.discussionEdit]: [
+  [locations.discussionDetail]: [
     { name: 'Discussion', link: locations.discussion},
-    { name: 'Edit', isActive: true }
+    { name: 'Detail', isActive: true }
   ],
   [locations.account]: [
     { name: 'My account', isActive: true }
@@ -75,8 +75,8 @@ const Routes = () => {
         <Route path={locations.usersEdit}  element={<CreateUserPage />} />
 
         <Route path={locations.discussion} element={<DiscussionPage />} />
-        <Route path={locations.discussionCreate} element={<CreateEditDiscussionPage />} />
-        <Route path={locations.discussionEdit}  element={<CreateEditDiscussionPage />} />
+        <Route path={locations.discussionCreate} element={<DiscussionDetailPage />} />
+        <Route path={locations.discussionDetail}  element={<DiscussionDetailPage />} />
         
 
         <Route path={locations.account} element={<MyAccountPage />} />

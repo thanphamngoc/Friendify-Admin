@@ -9,9 +9,9 @@ const discussionApi = {
     const url = '/discussions/admin/discussions';
     return axiosClient.get(url, options);
   },
-  getById: (id) => {
+  getById: (id, options) => {
     const url = `/discussions/${id}`;
-    return axiosClient.get(url);
+    return axiosClient.get(url, options);
   },
   create: (body) => {
     const url = '/discussions';

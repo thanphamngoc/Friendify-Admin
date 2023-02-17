@@ -44,9 +44,9 @@ ModalConfirm.propTypes = {
 
 ModalConfirm.defaultProps = {
   open: false,
-  onClose: () => {},
-  onConfirm: () => {},
-  onCancel: () => {},
+  onClose: () => { },
+  onConfirm: () => { },
+  onCancel: () => { },
   title: '',
   className: '',
   size: '',

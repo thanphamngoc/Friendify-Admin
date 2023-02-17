@@ -143,7 +143,7 @@ const UsersPage = () => {
     <Container className="" >
       <CardList>
         <div className="flex justify-between px-6 py-4">
-          <Link to={locations.usersCreate} className="pointer-events-none">
+          <Link to={locations.usersCreate} className="opacity-0 pointer-events-none">
             <ButtonRound
               className="flex items-center font-bold uppercase transition-transform duration-300 transform hover:-translate-y-1"
               color="primary"
@@ -153,12 +153,10 @@ const UsersPage = () => {
               <span className="ml-1">Create</span>
             </ButtonRound>
           </Link>
-          <div>
-            <InputSearch
-              defaultValue={paramsTextSearch}
-              onChange={handleChangeTextSearch}
-            />
-          </div>
+          <InputSearch
+            defaultValue={paramsTextSearch}
+            onChange={handleChangeTextSearch}
+          />
         </div>
 
         <Table
