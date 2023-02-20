@@ -5,7 +5,7 @@ import ButtonRound from "components/Button/ButtonRound";
 import CardList from "components/Card/CardList";
 import Container from "components/Container/Container";
 import { showToastError } from "components/CustomToast/CustomToast";
-import InputSearch from "components/Input/InputSearch";
+import InputSearchAutoChangeParams from "components/Input/InputSearchAutoChangeParams";
 import ModalConfirm from "components/Modal/ModalConfirm";
 import Table from "components/Table/Table";
 import ActionCell from "components/Table/TableCells/ActionCell";
@@ -18,12 +18,11 @@ import { ROW_PER_PAGE } from "utils/constant";
 const initState = [];
 
 const DiscussionPage = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const paramsPage = searchParams.get('page');
   const paramsTextSearch = searchParams.get('textSearch');
 
   const navigate = useNavigate();
-  const inputSearchTimeoutRef = useRef();
   const loadingRef = useRef(true);
   const [state, setState] = useState(initState);
 
@@ -55,19 +54,6 @@ const DiscussionPage = () => {
       source.cancel('cancel');
     };
   }, [paramsPage, paramsTextSearch]);
-
-  const handleChangePage = async (page) => {
-    searchParams.set('page', page);
-    setSearchParams(searchParams);
-  };
-
-  const handleChangeTextSearch = (e) => {
-    clearTimeout(inputSearchTimeoutRef.current);
-    inputSearchTimeoutRef.current = setTimeout(() => {
-      searchParams.set('textSearch', e.target.value);
-      setSearchParams(searchParams);
-    }, 500);
-  };
 
   // ----------------------------------------------------------------
   // HANDLE DELETE METHODS
@@ -166,10 +152,7 @@ const DiscussionPage = () => {
               <span className="ml-1">Create</span>
             </ButtonRound>
           </Link>
-          <InputSearch
-            defaultValue={paramsTextSearch}
-            onChange={handleChangeTextSearch}
-          />
+          <InputSearchAutoChangeParams paramName='textSearch' />
         </div>
 
         <Table
@@ -182,7 +165,6 @@ const DiscussionPage = () => {
           totalPage={state?.totalPage}
           currentPage={state?.currentPage}
           totalItems={state?.totalItems}
-          onChangePage={handleChangePage}
         />
       </CardList>
       {deleteItem?._id && (

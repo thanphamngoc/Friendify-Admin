@@ -5,7 +5,7 @@ import ButtonRound from "components/Button/ButtonRound";
 import CardList from "components/Card/CardList";
 import Container from "components/Container/Container";
 import { showToastError } from "components/CustomToast/CustomToast";
-import InputSearch from "components/Input/InputSearch";
+import InputSearchAutoChangeParams from "components/Input/InputSearchAutoChangeParams";
 import Table from "components/Table/Table";
 import SelectCell from "components/Table/TableCells/SelectCell";
 import SimpleCell from "components/Table/TableCells/SimpleCell";
@@ -14,16 +14,13 @@ import { FiPlus } from "react-icons/fi";
 import { Link, useSearchParams } from "react-router-dom";
 import { ROW_PER_PAGE, SELECT_STATUS_USER, STATUS_USER } from "utils/constant";
 
-const initState = [];
-
 const UsersPage = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const paramsPage = searchParams.get('page');
   const paramsTextSearch = searchParams.get('textSearch');
 
-  const inputSearchTimeoutRef = useRef();
   const loadingRef = useRef(true);
-  const [state, setState] = useState(initState);
+  const [state, setState] = useState([]);
 
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -43,7 +40,7 @@ const UsersPage = () => {
         if (e.message !== 'cancel') {
           showToastError(e.message);
         }
-        setState([...initState]);
+        setState([]);
       } finally {
         loadingRef.current = false;
       }
@@ -54,19 +51,6 @@ const UsersPage = () => {
       source.cancel('cancel');
     };
   }, [paramsPage, paramsTextSearch]);
-
-  const handleChangePage = async (page) => {
-    searchParams.set('page', page);
-    setSearchParams(searchParams);
-  };
-
-  const handleChangeTextSearch = (e) => {
-    clearTimeout(inputSearchTimeoutRef.current);
-    inputSearchTimeoutRef.current = setTimeout(() => {
-      searchParams.set('textSearch', e.target.value);
-      setSearchParams(searchParams);
-    }, 500);
-  };
 
   const handleChangeUserStatus = async (row, selectObj) => {
     try {
@@ -153,10 +137,7 @@ const UsersPage = () => {
               <span className="ml-1">Create</span>
             </ButtonRound>
           </Link>
-          <InputSearch
-            defaultValue={paramsTextSearch}
-            onChange={handleChangeTextSearch}
-          />
+          <InputSearchAutoChangeParams paramName="textSearch" />
         </div>
 
         <Table
@@ -169,7 +150,6 @@ const UsersPage = () => {
           totalPage={state?.totalPage}
           currentPage={state?.currentPage}
           totalItems={state?.totalItems}
-          onChangePage={handleChangePage}
         />
       </CardList>
     </Container>

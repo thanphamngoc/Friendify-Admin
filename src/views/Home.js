@@ -10,7 +10,7 @@ const Home = () => {
       id: 'user',
       width: 'w-full sm:w-1/2 xl:w-1/4',
       title: { name: 'Users', link: locations.users },
-      // children: [{ id: 'create', name: 'Create', link: locations.usersCreate }],
+      children: [{ id: 'create', name: 'Create', className: 'opacity-0 cursor-default' }],
     },
     {
       id: 'api-keys',
@@ -22,7 +22,7 @@ const Home = () => {
       id: 'discussions',
       width: 'w-full sm:w-1/2 xl:w-1/4',
       title: { name: 'Discussion', link: locations.discussion },
-      // children: [{ id: 'create', name: 'Create', link: locations.discussionCreate }],
+      children: [{ id: 'create', name: 'Create', className: 'opacity-0 cursor-default' }],
     },
 
   ];
@@ -34,7 +34,7 @@ const Home = () => {
           <div key={item?.id} className={` p-4 ${item?.width}`}>
             <div
               className={classNames(
-                'w-full h-full p-4 rounded-lg shadow-lg hover:-translate-y-2 bg-white',
+                'w-full  h-full p-4 rounded-lg shadow-lg hover:-translate-y-2 bg-white',
                 'transition-all duration-300 transform'
               )}
             >
@@ -48,11 +48,11 @@ const Home = () => {
               <div className="mt-2 space-x-4">
                 {item?.children?.map((i) =>
                   i?.link ? (
-                    <Link key={i?.id} to={i?.link}>
+                    <Link key={i?.id} to={i?.link} className={i?.className}>
                       <span className="hover:text-primary hover:underline">{i?.name}</span>
                     </Link>
                   ) : (
-                    <span key={i?.id}>{i?.name}</span>
+                    <span key={i?.id} className={i?.className}>{i?.name}</span>
                   ),
                 )}
               </div>
