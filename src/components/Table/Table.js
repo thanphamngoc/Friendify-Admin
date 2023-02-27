@@ -134,6 +134,7 @@ const Table = ({
         </table>
       </div>
       <TablePagination
+        key={currentPage}
         pageCount={totalPage}
         onChangePage={onChangePage || handleChangePage}
         currentPage={currentPage}
