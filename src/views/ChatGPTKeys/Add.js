@@ -14,7 +14,11 @@ const AddChatGptKeysPage = () => {
     watch,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      data: []
+    }
+  });
 
   const navigate = useNavigate();
 
@@ -48,8 +52,10 @@ const AddChatGptKeysPage = () => {
                     placeholder={'add keys'}
                     onChange={(e) => {
                       if (e.target.value) {
-                        const newValue = `${e.target.value}`.split(' ');
-                        onChange(newValue);
+                        const newValue = e.target.value.includes(',')
+                          ? e.target.value.split(',')
+                          : e.target.value.split(' ');
+                        onChange(newValue.filter((item) => !!item));
                       } else {
                         onChange(null);
                       }
