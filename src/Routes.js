@@ -8,8 +8,7 @@ import AddChatGptKeysPage from "views/ChatGPTKeys/Add";
 import UsersPage from "views/Users";
 import CreateUserPage from "views/Users/Create";
 import MyAccountPage from "views/MyAccount";
-import DiscussionPage from "views/Discussion";
-import DiscussionDetailPage from "views/Discussion/DiscussionDetail";
+import SettingsPage from "views/Settings";
 
 export const locations = {
   home: '/',
@@ -18,9 +17,7 @@ export const locations = {
   users: '/users',
   usersCreate: '/users/create',
   usersEdit: '/users/edit/:id',
-  discussion: '/discussion',
-  discussionCreate: '/discussion/create',
-  discussionDetail: '/discussion/:id',
+  settings: '/settings',
   login: '/login',
   account: '/account',
 };
@@ -46,19 +43,11 @@ export const breadcrumbs = {
     // { paramKey: 'id', isActive: true }
     { name: 'Edit', isActive: true }
   ],
-  [locations.discussion]: [
-    { name: 'Discussion', isActive: true},
-  ],
-  [locations.discussionCreate]: [
-    { name: 'Discussion', link: locations.discussion},
-    { name: 'Create', isActive: true }
-  ],
-  [locations.discussionDetail]: [
-    { name: 'Discussion', link: locations.discussion},
-    { name: 'Detail', isActive: true }
-  ],
   [locations.account]: [
     { name: 'My account', isActive: true }
+  ],
+  [locations.settings]: [
+    { name: 'Settings', isActive: true }
   ],
 };
 
@@ -74,10 +63,7 @@ const Routes = () => {
         <Route path={locations.usersCreate} element={<CreateUserPage />} />
         <Route path={locations.usersEdit}  element={<CreateUserPage />} />
 
-        <Route path={locations.discussion} element={<DiscussionPage />} />
-        <Route path={locations.discussionCreate} element={<DiscussionDetailPage />} />
-        <Route path={locations.discussionDetail}  element={<DiscussionDetailPage />} />
-        
+        <Route path={locations.settings} element={<SettingsPage />} />
 
         <Route path={locations.account} element={<MyAccountPage />} />
       </Route>

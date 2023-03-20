@@ -41,8 +41,9 @@ const Navbar = () => {
                 <div className="flex items-center justify-between h-full">
                   <div className="flex items-center flex-auto h-full">
                     <div className="flex-shrink-0 text-2xl font-bold">
-                      <Link to="/">
-                        VoiceGPT
+                      <Link to="/" className="flex items-center space-x-2">
+                        <img src="/images/logo-2.png" width={40} height={40} />
+                        <span>Friendify PGX</span>
                       </Link>
                     </div>
                   </div>
