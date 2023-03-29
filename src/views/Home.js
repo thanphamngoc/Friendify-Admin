@@ -18,11 +18,11 @@ const Home = () => {
       title: { name: 'ChatGPT Keys', link: locations.chatgptKeys },
       children: [{ id: 'create', name: 'Add keys', link: locations.chatgptKeyCreate }],
     },
-    // {
-    //   id: 'settings',
-    //   width: 'w-full sm:w-1/2 xl:w-1/4',
-    //   title: { name: 'Settings', link: locations.settings },
-    // },
+    {
+      id: 'settings',
+      width: 'w-full sm:w-1/2 xl:w-1/4',
+      title: { name: 'Settings', link: locations.settings },
+    },
 
   ];
 

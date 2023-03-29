@@ -1,12 +1,10 @@
-import CardList from "components/Card/CardList";
 import Container from "components/Container/Container";
+import SettingDisclosure from "views/Settings/SettingDisclosure";
 
 const SettingsPage = () => {
   return (
-    <Container className="max-w-3xl ">
-      <CardList className="p-4">
-        Setting
-      </CardList>
+    <Container className="" >
+      <SettingDisclosure />
     </Container>
   );
 };

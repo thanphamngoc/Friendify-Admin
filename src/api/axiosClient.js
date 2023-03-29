@@ -37,7 +37,7 @@ axiosClient.interceptors.request.use(async (config) => {
 
 axiosClient.interceptors.response.use(
   (response) => {
-    if (response?.data?.payload) {
+    if (typeof response?.data?.payload !== 'undefined') {
       return response.data.payload;
     }
 
