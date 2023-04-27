@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const { slate } = require('tailwindcss/colors');
+const { slate, red } = require('tailwindcss/colors');
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -9,6 +9,8 @@ module.exports = {
     extend: {
       colors: {
         primary: slate[800],
+        secondary: slate[500],
+        danger: red[500],
         'primary-hover': slate[400]
       }
     },

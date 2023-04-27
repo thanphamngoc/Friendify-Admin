@@ -13,9 +13,17 @@ const usersApi = {
     const url = '/users';
     return axiosClient.get(url, options);
   },
+  getById: (id) => {
+    const url = `/users/${id}`;
+    return axiosClient.get(url);
+  },
   create: (body) => {
     const url = '/users/registry';
-    return axiosClient.get(url, body);
+    return axiosClient.post(url, body);
+  },
+  edit: (id, body) => {
+    const url = `/users/${id}`;
+    return axiosClient.put(url, body);
   },
 };
 

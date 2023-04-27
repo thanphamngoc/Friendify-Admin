@@ -5,26 +5,86 @@ import Container from "components/Container/Container";
 import { showToastError, showToastSuccess } from "components/CustomToast/CustomToast";
 import FormFooter from "components/Form/FormFooter";
 import Input from "components/Input/Input";
+import ModalConfirm from "components/Modal/ModalConfirm";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { STATUS_USER } from "utils/constant";
+
+const MODAL_INIT = {
+  isOpen: false,
+  children: '',
+  title: '',
+  data: {},
+  onConfirm: () => { },
+};
 
 const CreateUserPage = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  // ----------------------------------------------------------------
+  // Handle Modal Events
+  const [modal, setModal] = useState(MODAL_INIT);
+  const resetModal = () => { setModal(MODAL_INIT); };
+
+  const handleDelete = async () => {
+    try {
+      await usersApi.edit(id, { status: STATUS_USER.DELETED });
+      showToastSuccess('Message', 'Delete successful');
+    } catch (e) {
+      console.log(e);
+      showToastError('Error', 'Something went wrong');
+    } finally {
+      resetModal();
+    }
+  };
+
+  const onClickDelete = () => {
+    setModal({
+      isOpen: true,
+      title: 'Delete User',
+      children: (
+        <>
+          <p>Do you still want to delete user </p>
+          <p className="mt-4 text-xl font-bold text-center text-primary">{id}</p>
+        </>
+      ),
+      onConfirm: () => {
+        handleDelete();
+      },
+    });
+  };
+  // ----------------------------------------------------------------
+  // const user = useMemo(() => {
+  //   if (id) {
+  //     return usersApi.getById(id);
+  //   }
+  // }, [id]);
 
   const {
     control,
-    watch,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      fullName: '',
+      email: '',
+      phone: '',
+      password: '',
+      inviterReferralId: '',
+    }
+  });
 
-  const watchData = watch('data');
 
   const onHandleSubmit = async (data) => {
     try {
       // const formData = new FormData();
       // formData.append('body', JSON.stringify(data));
-      await usersApi.create(data);
+      if (id) {
+        await usersApi.edit(id, data);
+      } else {
+        await usersApi.create(data);
+      }
       showToastSuccess('', 'Successfully');
     } catch (e) {
       console.error(e);
@@ -72,6 +132,15 @@ const CreateUserPage = () => {
 
   return (
     <Container>
+      <ModalConfirm
+        open={modal?.isOpen}
+        onClose={resetModal}
+        onConfirm={modal?.onConfirm}
+        onCancel={resetModal}
+        title={modal?.title}
+      >
+        {modal.children}
+      </ModalConfirm>
       <CardBox title={'Add new user'}>
         <form autoComplete="off" onSubmit={handleSubmit(onHandleSubmit)}>
           <div className="flex flex-col 4xl:flex-row">
@@ -108,9 +177,11 @@ const CreateUserPage = () => {
             })}
           </div>
           <FormFooter
-            disabled={Object.keys(errors).length > 0 || isSubmitting || watchData?.length === 0}
+            disabled={Object.keys(errors).length > 0 || isSubmitting}
             isLoading={isSubmitting}
+            acceptText={id ? 'Edit' : 'Create'}
             onClickBack={() => { navigate(locations.users); }}
+            onClickDelete={onClickDelete}
           />
         </form>
       </CardBox>

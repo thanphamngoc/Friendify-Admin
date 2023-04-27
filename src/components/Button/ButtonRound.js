@@ -11,6 +11,7 @@ const ButtonRound = ({ children, className = '', isLoading, disabled = false, co
         'flex items-center rounded-full justify-center transition-opacity',
         disabled ? 'opacity-50 pointer-events-none' : 'hover:opacity-80',
         color === 'primary' && 'bg-primary text-white',
+        color === 'danger' && ' text-danger border-danger',
         !className?.includes('border') && 'border',
         !className?.includes('px') && 'px-5',
         !className?.includes('py') && 'py-2',

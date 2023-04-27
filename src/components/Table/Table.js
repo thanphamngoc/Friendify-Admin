@@ -6,7 +6,12 @@ import { useTable } from 'react-table';
 import { HiOutlineDocumentSearch } from 'react-icons/hi';
 import classNames from 'classnames';
 import SpinnerLoading from 'components/SpinnerLoading';
+import { useSearchParams } from 'react-router-dom';
 
+//----------------------------------------------------------------
+// * IF HAVE ON-CHANGE-PAGE PROPS, THIS TABLE COMPONENT WILL NOT AUTO CHANGE PAGE PARAM
+// * WE CAN HANDLE AFTER AUTO CHANGE PAGE PARAM BY ON-AFTER-CHANGE-PAGE PROPS
+//----------------------------------------------------------------
 const Table = ({
   isLoading,
   data,
@@ -18,6 +23,7 @@ const Table = ({
   currentPage,
   totalItems,
   onChangePage,
+  onAfterChangePage,
 }) => {
   const _data = React.useMemo(() => data, [data]);
   const _columns = React.useMemo(() => columns, [columns]);
@@ -26,6 +32,14 @@ const Table = ({
     columns: _columns || [],
     data: _data || [],
   });
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleChangePage = async (page) => {
+    searchParams.set('page', page);
+    setSearchParams(searchParams);
+    onAfterChangePage(page);
+  };
 
   return (
     <>
@@ -120,8 +134,9 @@ const Table = ({
         </table>
       </div>
       <TablePagination
+        key={currentPage}
         pageCount={totalPage}
-        onChangePage={onChangePage}
+        onChangePage={onChangePage || handleChangePage}
         currentPage={currentPage}
         totalItems={totalItems}
       />
@@ -140,6 +155,7 @@ Table.propTypes = {
   currentPage: PropTypes.number,
   totalItems: PropTypes.number,
   onChangePage: PropTypes.func,
+  onAfterChangePage: PropTypes.func,
 };
 
 Table.defaultProps = {
@@ -152,7 +168,7 @@ Table.defaultProps = {
   totalPage: 0,
   currentPage: 0,
   totalItems: 0,
-  onChangePage: () => { },
+  onAfterChangePage: () => { },
 };
 
 export default Table;

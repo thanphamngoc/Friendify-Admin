@@ -19,6 +19,7 @@ export default (WrappedComponent) => function UserLogined({ ...props }) {
           setUserLogin(res);
         } catch (e) {
           console.error(e);
+          navigate('/login');
         }
         if (pathname === locations.login) {
           navigate(locations.home);

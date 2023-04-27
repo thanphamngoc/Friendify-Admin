@@ -17,7 +17,7 @@ const ActionCell = ({ editText, onEdit, onDelete }) => {
         </Tooltip>
       )}
       {onDelete && (
-        <Tooltip position="top" title="Xóa">
+        <Tooltip position="top" title="Xóa"  theme='light'>
           <FiTrash
             data-tip=""
             data-for={`delete-btn-tooltip`}
@@ -38,7 +38,7 @@ ActionCell.propTypes = {
 };
 
 ActionCell.defaultProps = {
-  editText: 'Chỉnh sửa',
+  editText: 'Edit',
 };
 
 export default ActionCell;

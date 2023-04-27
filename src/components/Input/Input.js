@@ -9,13 +9,14 @@ ErrorSpan.propTypes = {
   message: PropTypes.string,
 };
 
-const Input = ({ className, isValid = false, ...props }) => {
+const Input = ({ className, isValid = false, size, ...props }) => {
   return (
     <input
       {...props}
       className={classnames(
         className,
-        'p-4 bg-transparent rounded-xl w-full border focus:outline-none',
+        size === 'sm' ? 'p-2' : 'p-4',
+        'bg-transparent rounded-xl w-full border focus:outline-none',
         props.disabled && 'opacity-70',
         isValid && 'border-red-400',
       )}
@@ -24,6 +25,7 @@ const Input = ({ className, isValid = false, ...props }) => {
 };
 
 Input.propTypes = {
+  size: PropTypes.oneOf(['sm', PropTypes.any]),
   className: PropTypes.string,
   isValid: PropTypes.bool,
 };
@@ -60,7 +62,7 @@ InputCustom.propTypes = {
   className: PropTypes.string,
   label: PropTypes.string,
   rules: PropTypes.object,
-  register: PropTypes.any,
+  register: PropTypes.func,
 };
 
 export default Input;

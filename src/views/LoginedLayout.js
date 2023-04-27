@@ -4,10 +4,11 @@ import { Outlet } from "react-router-dom";
 
 const LoginedLayout = () => {
   return (
-    <div>
+    <div className="">
       <Navbar />
       <Breadcrumb />
       <Outlet />
+      <div className="h-10" />
     </div>
   );
 };

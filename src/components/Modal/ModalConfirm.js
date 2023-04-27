@@ -20,9 +20,9 @@ const ModalConfirm = ({
       <div className={`animate-fade-in py-8 px-8 ${className}`}>{children || message}</div>
 
       <div className="flex justify-center py-4 space-x-4 border-t border-black-2">
-        <ButtonRound onClick={onCancel}>Hủy bỏ</ButtonRound>
-        <ButtonRound className="font-bold text-black border-0 bg-primary" onClick={onConfirm}>
-          Xác nhận
+        <ButtonRound onClick={onCancel}>Cancel</ButtonRound>
+        <ButtonRound color="primary" className="font-bold" onClick={onConfirm}>
+          Accept
         </ButtonRound>
       </div>
     </Modal>
@@ -44,9 +44,9 @@ ModalConfirm.propTypes = {
 
 ModalConfirm.defaultProps = {
   open: false,
-  onClose: () => {},
-  onConfirm: () => {},
-  onCancel: () => {},
+  onClose: () => { },
+  onConfirm: () => { },
+  onCancel: () => { },
   title: '',
   className: '',
   size: '',
