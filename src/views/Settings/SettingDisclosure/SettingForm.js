@@ -26,7 +26,7 @@ const SettingForm = ({ keyApi }) => {
           result.push({
             id: `${key}.${k}`,
             name: `${key}.${k}`,
-            label: k.replace('-', ' ').replace('_', ' '),
+            label: ((+k+1)+'').replace('-', ' ').replace('_', ' '),
             rules: { required: 'Required', },
             className: 'mt-2',
             classNameLabel: 'font-semibold mt-4 pl-4 text-sm',

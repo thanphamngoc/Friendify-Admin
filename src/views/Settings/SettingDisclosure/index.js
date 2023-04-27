@@ -16,10 +16,6 @@ const categories = {
       children: <SettingForm keyApi="email" />
     },
     {
-      label: 'Change color',
-      children: <SettingForm keyApi="change-color" />
-    },
-    {
       label: 'About us',
       children: <SettingForm keyApi="about-us" />
     },
