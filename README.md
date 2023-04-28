@@ -19,7 +19,7 @@ To make it easy for you to get started with GitLab, here's a list of recommended
 
 ## How to start
 1. Clone source code
-   git clone https://github.com/thanphamngoc/Friendify-Admin.git
+   git clone code from github or gitlab
 2. Install dependencies
    ``` npm install ``` or ``` yarn```
 3. ``` cp env.example .env``` and change data .env file
